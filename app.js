@@ -131,8 +131,36 @@
     };
   }
 
-  const dealsView = () => `<h1>${t("deals.title")}</h1><p class="muted">${t("deals.soon")}</p>
-    <a class="btn" href="${DEALS_BOT}" target="_blank" rel="noopener">${t("deals.bot")}</a>`;
+  // Скидки: data/deals.json кладёт бот FunkyDiscount (чат Боты). Магазин не называем, только регион.
+  async function loadDeals() {
+    try { const r = await fetch("data/deals.json", { cache: "no-cache" }); if (r.ok) return await r.json(); } catch {}
+    return null;
+  }
+  const money = (p, cur) => cur === "RUB" ? `${Math.round(p).toLocaleString("ru-RU")} ₽` : `$${Number(p).toFixed(2)}`;
+  const date = s => s ? new Date(s).toLocaleDateString(lang === "ru" ? "ru-RU" : "en-US", { day: "numeric", month: "short" }) : "";
+  function dealsView(d) {
+    const soon = `<h1>${t("deals.title")}</h1><p class="muted">${t("deals.soon")}</p>
+      <a class="btn" href="${DEALS_BOT}" target="_blank" rel="noopener">${t("deals.bot")}</a>`;
+    if (!d || !Array.isArray(d.deals) || !d.deals.length) return soon;
+    const cur = lang === "ru" ? "RUB" : "USD";
+    const rows = d.deals.map(x => {
+      const c = x.price && x.price[cur] != null ? cur : (x.price && x.price.RUB != null ? "RUB" : "USD");
+      if (!x.price || x.price[c] == null) return "";
+      return `<a class="deal" href="${esc(x.link || d.bot || DEALS_BOT)}" target="_blank" rel="noopener">
+        ${x.image ? `<img loading="lazy" src="${esc(x.image)}" alt="" onerror="this.remove()">` : ""}
+        <div class="deal-body"><b>${esc(x.title)}</b>
+          <div class="row"><span><span class="price">${money(x.price[c], c)}</span>
+            ${x.old_price && x.old_price[c] != null ? `<s class="muted small">${money(x.old_price[c], c)}</s>` : ""}</span>
+            ${x.cut ? `<span class="badge">−${x.cut}%</span>` : ""}</div>
+          <div class="muted small">${esc(x["region_" + lang] || x.region_ru || "")}${x.until ? ` · ${t("deals.until")} ${date(x.until)}` : ""}</div>
+        </div></a>`;
+    }).join("");
+    return `<h1>${t("deals.title")}</h1>
+      <div class="deals">${rows}</div>
+      <a class="btn" href="${esc(d.bot || DEALS_BOT)}" target="_blank" rel="noopener">${t("deals.bot")}</a>
+      <p class="muted small">${esc(d["note_" + lang] || d.note_ru || "")}${d.updated ? ` ${t("deals.updated")}: ${date(d.updated)}` : ""}</p>
+      ${d.source ? `<p class="muted small">${t("deals.source")} <a href="${esc(d.source.url)}" target="_blank" rel="noopener">${esc(d.source.name)}</a></p>` : ""}`;
+  }
   const wallsView = () => `<h1>${t("walls.title")}</h1><p class="muted">${t("walls.soon")}</p>`;
 
   // ---------- навигация ----------
@@ -151,7 +179,7 @@
         view.innerHTML = m ? detailView(m, nw) : catalogView(ls);
       } else if (path === "/pc") { const ls = await loadCatalog(); view.innerHTML = pcView(ls, q); pcBind(ls); }
       else if (path === "/send") { view.innerHTML = sendView(); sendBind(); }
-      else if (path === "/deals") view.innerHTML = dealsView();
+      else if (path === "/deals") view.innerHTML = dealsView(await loadDeals());
       else if (path === "/walls") view.innerHTML = wallsView();
       else view.innerHTML = catalogView(await loadCatalog());
     } catch { view.innerHTML = `<p class="note">${t("error")}</p>`; }
