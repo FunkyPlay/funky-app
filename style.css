@@ -8,7 +8,7 @@
 * { box-sizing: border-box; }
 html, body { margin: 0; background: var(--bg); color: var(--text); }
 body {
-  font: 15px/1.45 var(--font); padding-bottom: calc(68px + env(safe-area-inset-bottom));
+  font: 15px/1.45 var(--font); padding-bottom: calc(84px + env(safe-area-inset-bottom));
   background:
     radial-gradient(60% 140px at 10% 0, #ff3fd226, transparent),
     radial-gradient(60% 140px at 95% 0, #7ae8ff1c, transparent), var(--bg);

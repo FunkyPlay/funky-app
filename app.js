@@ -33,12 +33,13 @@
       const r = await fetch(CATALOG, { cache: "no-cache" });
       if (!r.ok) throw new Error(r.status);
       const d = await r.json();
-      store.set("catalog", JSON.stringify(d.modlists));
       lists = d.modlists;
+      // «Скоро» не показываем, пока Дизайн не скажет (GTA — личная сборка Funky, не анонсирована)
+      store.set("catalog", JSON.stringify(lists = lists.filter(m => m.status !== "soon")));
     } catch (e) {
       const c = store.get("catalog");
       if (!c) throw e;
-      lists = JSON.parse(c); offline = true;
+      lists = JSON.parse(c).filter(m => m.status !== "soon"); offline = true;
     }
     return lists;
   }
