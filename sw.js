@@ -1,6 +1,6 @@
 // Кэш приложения: оболочка — сразу из кэша, данные — сначала сеть.
-const V = "fa-v2";
-const SHELL = ["./", "index.html", "style.css", "app.js", "strings.js", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/mark.png", "icons/wordmark.png"];
+const V = "fa-v3";
+const SHELL = ["./", "index.html", "style.css", "app.js", "strings.js", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/mark.png", "icons/wordmark.png", "fonts/roboto-condensed-700-cyrillic.woff2", "fonts/roboto-condensed-700-latin.woff2"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(V).then(c => c.addAll(SHELL))); self.skipWaiting(); });
 self.addEventListener("activate", e => {
   e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== V).map(k => caches.delete(k)))));
