@@ -21,6 +21,7 @@ window.STR = {
     "pc.rec": "Рекомендуем: ",
     "deals.title": "Скидки на игры", "deals.soon": "Скоро здесь будут скидки из бота FunkyDiscount.",
     "deals.bot": "Все регионы и слежение — в боте",
+    "platform.pc": "ПК", "platform.xbox": "Xbox",
     "deals.until": "до", "deals.updated": "Обновлено", "deals.source": "Данные о ценах:",
     "walls.title": "Обои", "walls.soon": "Скоро здесь будут обои из кадров наших сборок.",
     "offline": "Нет связи — показываем сохранённое.", "error": "Не удалось загрузить данные."
@@ -46,6 +47,7 @@ window.STR = {
     "pc.rec": "Recommended: ",
     "deals.title": "Game deals", "deals.soon": "Deals from the FunkyDiscount bot are coming here soon.",
     "deals.bot": "All regions and price alerts — in the bot",
+    "platform.pc": "PC", "platform.xbox": "Xbox",
     "deals.until": "until", "deals.updated": "Updated", "deals.source": "Price data:",
     "walls.title": "Wallpapers", "walls.soon": "Wallpapers from our modlist shots are coming soon.",
     "offline": "Offline — showing saved data.", "error": "Couldn't load data."

@@ -5,6 +5,8 @@
   const DOWNLOAD = "https://funkylauncher.com/download";
   const CHANNEL = { ru: "https://t.me/FunkyPlayTV", en: "https://t.me/FunkyLauncher" };
   const DEALS_BOT = "https://t.me/FunkyDiscountBot";
+  // витрина бота FunkyDiscount на нашем сервере; локально для проверки — data/deals.json
+  const DEALS = location.hostname === "localhost" ? "data/deals.json" : "https://api.funkylauncher.com/support/deals.json";
 
   const tg = window.Telegram && Telegram.WebApp && Telegram.WebApp.initData ? Telegram.WebApp : null;
   const view = document.getElementById("view");
@@ -131,9 +133,9 @@
     };
   }
 
-  // Скидки: data/deals.json кладёт бот FunkyDiscount (чат Боты). Магазин не называем, только регион.
+  // Скидки: витрина бота FunkyDiscount (чат Боты). Магазин не называем — только платформа и регион.
   async function loadDeals() {
-    try { const r = await fetch("data/deals.json", { cache: "no-cache" }); if (r.ok) return await r.json(); } catch {}
+    try { const r = await fetch(DEALS, { cache: "no-cache" }); if (r.ok) return await r.json(); } catch {}
     return null;
   }
   const money = (p, cur) => cur === "RUB" ? `${Math.round(p).toLocaleString("ru-RU")} ₽` : `$${Number(p).toFixed(2)}`;
@@ -152,7 +154,7 @@
           <div class="row"><span><span class="price">${money(x.price[c], c)}</span>
             ${x.old_price && x.old_price[c] != null ? `<s class="muted small">${money(x.old_price[c], c)}</s>` : ""}</span>
             ${x.cut ? `<span class="badge">−${x.cut}%</span>` : ""}</div>
-          <div class="muted small">${esc(x["region_" + lang] || x.region_ru || "")}${x.until ? ` · ${t("deals.until")} ${date(x.until)}` : ""}</div>
+          <div class="muted small">${[x.platform ? t("platform." + x.platform) : "", esc(x["region_" + lang] || x.region_ru || "")].filter(Boolean).join(" · ")}${x.until ? ` · ${t("deals.until")} ${date(x.until)}` : ""}</div>
         </div></a>`;
     }).join("");
     return `<h1>${t("deals.title")}</h1>
