@@ -1,50 +1,88 @@
-/* Временный вид. Итоговый стиль — у чата Дизайн. */
+/* Стиль v4 (макет Дизайна mobile_home, одобрен Funky 24.11). */
 :root {
-  --bg: #0d0f14; --card: #161a22; --line: #252b36; --text: #eef1f6; --muted: #9aa3b2;
-  --accent: #ff2a6d; --ok: #2ecc71; --warn: #f5b041; --bad: #ff5a5a;
-}
-body.tg {
-  --bg: var(--tg-theme-bg-color, #0d0f14); --text: var(--tg-theme-text-color, #eef1f6);
-  --muted: var(--tg-theme-hint-color, #9aa3b2); --card: var(--tg-theme-secondary-bg-color, #161a22);
+  --bg: #07070d; --card: #12121c; --line: #262638; --text: #ffffff; --muted: #9aa0b4;
+  --pink: #ff3fd2; --cyan: #7ae8ff; --accent: linear-gradient(100deg, #ff3fd2, #7ae8ff);
+  --ok: #4be39a; --warn: #ffc65c; --bad: #ff5a7a;
+  --font: Bahnschrift, "Segoe UI", Roboto, system-ui, sans-serif;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; background: var(--bg); color: var(--text); }
-body { font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+body {
+  font: 15px/1.45 var(--font); padding-bottom: calc(68px + env(safe-area-inset-bottom));
+  background:
+    radial-gradient(60% 140px at 10% 0, #ff3fd226, transparent),
+    radial-gradient(60% 140px at 95% 0, #7ae8ff1c, transparent), var(--bg);
+  background-repeat: no-repeat;
+}
 a { color: inherit; }
 img { max-width: 100%; display: block; }
-.top { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--bg); border-bottom: 1px solid var(--line); }
-.brand { display: flex; align-items: center; gap: 8px; font-weight: 800; letter-spacing: .06em; font-size: 14px; flex: 1; }
-.brand img { width: 26px; height: 26px; border-radius: 6px; }
+.slant { font-weight: 800; font-variation-settings: "wdth" 75; font-stretch: condensed; transform: skewX(-9deg); transform-origin: left; display: inline-block; }
+
+/* шапка */
+.top { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: linear-gradient(#07070df0, #07070dc0); backdrop-filter: blur(8px); }
+.brand { display: flex; align-items: center; gap: 6px; flex: 1; text-decoration: none; }
+.brand .mark { width: 28px; height: 28px; }
+.brand .word { height: 25px; width: auto; margin-left: -2px; }
 .icon-btn { background: none; border: 0; color: var(--text); font-size: 28px; line-height: 1; padding: 0 6px 0 0; cursor: pointer; }
-.chip { background: var(--card); color: var(--text); border: 1px solid var(--line); border-radius: 99px; padding: 4px 12px; font-weight: 700; cursor: pointer; }
-main { padding: 8px 16px 24px; max-width: 720px; margin: 0 auto; }
-h1 { font-size: 22px; margin: 12px 0; } h2 { font-size: 17px; margin: 24px 0 8px; }
+.chip { background: var(--card); color: var(--text); border: 1px solid var(--line); border-radius: 99px; padding: 5px 14px; font: 700 13px var(--font); cursor: pointer; }
+
+main { padding: 4px 16px 24px; max-width: 720px; margin: 0 auto; }
+h1 { font-size: 40px; line-height: 1.1; margin: 8px 0 4px; }
+h1 > span { font-weight: 800; font-variation-settings: "wdth" 75; transform: skewX(-9deg); transform-origin: left; display: inline-block; }
+.sub { font-size: 12px; color: var(--muted); margin: 0 0 16px; }
+h2 { font-size: 17px; margin: 24px 0 8px; }
 .muted { color: var(--muted); } .small { font-size: 13px; } .note { background: var(--card); padding: 10px 12px; border-radius: 10px; color: var(--muted); }
-.cards { display: grid; gap: 14px; }
-@media (min-width: 640px) { .cards { grid-template-columns: 1fr 1fr; } }
-.card { display: block; text-decoration: none; background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
-.card img, .card .ph { aspect-ratio: 16/9; width: 100%; object-fit: cover; background: #222836; }
-.card.soon { opacity: .6; }
-.card-body { padding: 10px 12px 12px; }
+
+/* карточки сборок */
+.cards { display: grid; gap: 10px; }
+.card { position: relative; display: block; height: 133px; text-decoration: none; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--card); }
+.card.first { height: 213px; }
+.card > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, #07070df5 0%, #07070dc0 30%, transparent 62%); }
+.card .status { position: absolute; z-index: 1; top: 10px; left: 10px; background: var(--accent); color: #07070d; font: 700 10px var(--font); letter-spacing: .06em; text-transform: uppercase; border-radius: 4px; padding: 3px 7px; }
+.card.soon .status { background: var(--card); color: var(--muted); }
+.card .info { position: absolute; z-index: 1; left: 14px; right: 12px; bottom: 12px; }
+.card .game { font-size: 31px; line-height: 1; text-transform: uppercase; white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+.card.first .game { font-size: 37px; }
+.card .row { margin-top: 8px; }
+.card .name { font-size: 13px; color: var(--cyan); font-weight: 600; text-transform: uppercase; }
+.card .name em { font-style: normal; color: var(--muted); text-transform: none; font-weight: 400; }
 .row { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
-.badge { font-size: 12px; background: var(--accent); color: #fff; border-radius: 99px; padding: 1px 8px; white-space: nowrap; }
-.soon .badge { background: var(--line); }
-.hero { border-radius: 14px; aspect-ratio: 16/9; width: 100%; object-fit: cover; margin-top: 8px; }
+
+/* кнопки */
+.btn { display: inline-block; text-align: center; text-decoration: none; background: var(--accent); color: #07070d; border: 0; border-radius: 9px; padding: 11px 16px; font: 700 13px var(--font); cursor: pointer; box-shadow: 0 0 13px #ff3fd244; }
+.btn.wide { display: block; width: 100%; }
+.btn.ghost, .pill { background: transparent; color: var(--text); border: 1px solid #ffffff55; box-shadow: none; }
+.pill { border-radius: 99px; padding: 4px 11px; font: 700 12px var(--font); white-space: nowrap; }
+.btn.ghost { border-radius: 99px; }
+
+.hero { border-radius: 12px; aspect-ratio: 16/9; width: 100%; object-fit: cover; margin-top: 8px; border: 1px solid var(--line); }
+.title-game { font-size: 34px; text-transform: uppercase; margin: 14px 0 0; line-height: 1.05; }
 .actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; } .actions.col { flex-direction: column; }
-.btn { display: inline-block; text-align: center; text-decoration: none; background: var(--accent); color: #fff; border: 0; border-radius: 10px; padding: 11px 16px; font: inherit; font-weight: 700; cursor: pointer; }
-.btn.ghost { background: transparent; border: 1px solid var(--line); color: var(--text); }
 .news { background: var(--card); border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; }
+
+/* формы */
+.form { display: grid; gap: 12px; }
+.form label { display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
+.form label.check { display: flex; align-items: center; gap: 8px; color: var(--text); }
+select, input[type=text], input:not([type]) { font: inherit; color: var(--text); background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; width: 100%; }
+.verdict { margin-top: 16px; padding: 14px; border-radius: 12px; background: var(--card); border-left: 4px solid var(--warn); font-weight: 600; }
+.verdict.high { border-color: var(--ok); } .verdict.low { border-color: var(--bad); }
+
+/* скидки */
 .deals { display: grid; gap: 10px; margin-bottom: 14px; }
 .deal { display: flex; text-decoration: none; background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
 .deal img { width: 42%; max-width: 184px; aspect-ratio: 460/215; object-fit: cover; flex: none; }
 .deal-body { padding: 8px 10px; flex: 1; min-width: 0; display: grid; gap: 2px; }
 .price { font-weight: 800; margin-right: 6px; }
-.form { display: grid; gap: 12px; }
-.form label { display: grid; gap: 4px; font-size: 14px; color: var(--muted); }
-.form label.check { display: flex; align-items: center; gap: 8px; color: var(--text); }
-select, input[type=text], input:not([type]) { font: inherit; color: var(--text); background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; width: 100%; }
-.verdict { margin-top: 16px; padding: 14px; border-radius: 12px; background: var(--card); border-left: 4px solid var(--warn); font-weight: 600; }
-.verdict.high { border-color: var(--ok); } .verdict.low { border-color: var(--bad); }
-.tabs { position: fixed; bottom: 0; left: 0; right: 0; display: flex; background: var(--bg); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom); z-index: 5; }
-.tabs a { flex: 1; text-align: center; padding: 14px 4px; text-decoration: none; color: var(--muted); font-size: 13px; font-weight: 600; }
-.tabs a.on { color: var(--accent); }
+.badge { font: 700 11px var(--font); background: var(--accent); color: #07070d; border-radius: 4px; padding: 2px 6px; white-space: nowrap; }
+
+/* нижние вкладки */
+.tabs { position: fixed; bottom: 0; left: 0; right: 0; display: flex; background: #07070df2; border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom); z-index: 5; }
+.tabs a { flex: 1; display: grid; justify-items: center; gap: 2px; padding: 9px 2px 7px; text-decoration: none; color: var(--muted); font: 600 10px var(--font); }
+.tabs svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.tabs a::after { content: ""; width: 30px; height: 2px; border-radius: 2px; margin-top: 3px; background: transparent; }
+.tabs a.on { color: var(--pink); }
+.tabs a.on::after { background: var(--accent); }
+
+/* Telegram: свои цвета темы не берём — фирменный вид одинаковый везде */

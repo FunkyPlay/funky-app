@@ -2,7 +2,7 @@
 window.STR = {
   ru: {
     "tab.catalog": "Сборки", "tab.pc": "Мой ПК", "tab.deals": "Скидки", "tab.walls": "Обои",
-    "catalog.title": "Сборки FunkyPlay",
+    "catalog.title": "Сборки", "catalog.sub": "Моды ставит Funky Launcher на компьютере", "about": "О сборке",
     "status.released": "Вышла", "status.soon": "Скоро",
     "mods": "модов", "gb": "ГБ", "version": "Версия",
     "details": "О сборке", "requirements": "Требования", "news": "Что нового",
@@ -28,7 +28,7 @@ window.STR = {
   },
   en: {
     "tab.catalog": "Modlists", "tab.pc": "My PC", "tab.deals": "Deals", "tab.walls": "Wallpapers",
-    "catalog.title": "FunkyPlay modlists",
+    "catalog.title": "Modlists", "catalog.sub": "Funky Launcher installs the mods on your PC", "about": "About",
     "status.released": "Out now", "status.soon": "Soon",
     "mods": "mods", "gb": "GB", "version": "Version",
     "details": "About", "requirements": "Requirements", "news": "What's new",

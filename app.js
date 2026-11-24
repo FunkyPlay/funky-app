@@ -64,23 +64,39 @@
   }
 
   // ---------- экраны ----------
+  // число модов — круглое, как в описании сборки («400+»); иначе округляем вниз
+  function modsText(m) {
+    const d = /(\d{2,4})\+/.exec(L(m.description));
+    if (d) return `${d[1]}+ ${t("mods")}`;
+    if (!m.modCount) return "";
+    const n = m.modCount >= 300 ? Math.floor(m.modCount / 100) * 100 : Math.floor(m.modCount / 10) * 10;
+    return `${n}+ ${t("mods")}`;
+  }
+  const ORDER = ["neon-nights", "starfield", "fallout4"];
+  const rank = m => (m.status === "soon" ? 100 : 0) + (ORDER.includes(m.id) ? ORDER.indexOf(m.id) : 50);
+  function card(m, first) {
+    const mods = modsText(m);
+    return `<a class="card${first ? " first" : ""}${m.status === "soon" ? " soon" : ""}" href="#/m/${encodeURIComponent(m.id)}">
+      ${banner(m) ? `<img loading="lazy" src="${banner(m)}" alt="">` : ""}
+      <span class="status">${t("status." + m.status)}</span>
+      <div class="info">
+        <div class="game slant">${esc(m.game)}</div>
+        <div class="row"><span class="name">${esc(m.title)}${mods ? ` <em>· ${mods}</em>` : ""}</span>
+          <span class="pill">${t("about")} ›</span></div>
+      </div></a>`;
+  }
   function catalogView(ls) {
-    return `<h1>${t("catalog.title")}</h1>${offline ? `<p class="note">${t("offline")}</p>` : ""}
-      <div class="cards">${ls.map(m => `
-        <a class="card${m.status === "soon" ? " soon" : ""}" href="#/m/${encodeURIComponent(m.id)}">
-          ${banner(m) ? `<img loading="lazy" src="${banner(m)}" alt="">` : `<div class="ph"></div>`}
-          <div class="card-body">
-            <div class="row"><b>${esc(m.title)}</b><span class="badge">${t("status." + m.status) || ""}</span></div>
-            <div class="muted">${esc(L(m.tag))}</div>
-            ${m.modCount ? `<div class="muted small">${m.modCount} ${t("mods")} · ${m.sizeGb} ${t("gb")} · ${t("version")} ${esc(m.version)}</div>` : ""}
-          </div>
-        </a>`).join("")}</div>`;
+    const s = [...ls].sort((a, b) => rank(a) - rank(b));
+    return `<h1><span>${t("catalog.title")}</span></h1><p class="sub">${t("catalog.sub")}</p>
+      ${offline ? `<p class="note">${t("offline")}</p>` : ""}
+      <div class="cards">${s.map((m, i) => card(m, i === 0) + (i === 0 ? `<a class="btn wide" href="#/send">${t("send")}</a>` : "")).join("")}</div>`;
   }
 
   function detailView(m, nw) {
     const items = (nw[m.id] || []).filter(n => n[lang] || n.en);
     return `${banner(m) ? `<img class="hero" src="${banner(m)}" alt="">` : ""}
-      <h1>${esc(m.title)}</h1>
+      <div class="title-game slant">${esc(m.game)}</div>
+      <h1 style="font-size:20px;color:var(--cyan)">${esc(m.title)}</h1>
       <p class="muted">${esc(L(m.tag))}${m.version ? ` · ${t("version")} ${esc(m.version)}` : ""}</p>
       <p>${esc(L(m.description))}</p>
       ${m.status === "released" ? `<div class="actions">
@@ -189,8 +205,8 @@
   }
   function applyLang() {
     document.documentElement.lang = lang;
-    langBtn.textContent = lang === "ru" ? "EN" : "RU";
-    document.querySelectorAll("#tabs a").forEach(a => a.textContent = t("tab." + a.dataset.tab));
+    langBtn.textContent = lang.toUpperCase();
+    document.querySelectorAll("#tabs a").forEach(a => a.querySelector("span").textContent = t("tab." + a.dataset.tab));
   }
   langBtn.onclick = () => { lang = lang === "ru" ? "en" : "ru"; store.set("lang", lang); applyLang(); route(); };
   const goBack = () => history.length > 1 ? history.back() : (location.hash = "#/");
